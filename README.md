@@ -1,2 +1,4 @@
 # DirtyAIHelperTools
-A collection of some quick dirty scripts to help with development tasks
+A collection of some quick dirty scripts utilizing openai to help with development tasks
+
+Depends on openai, dotenv
