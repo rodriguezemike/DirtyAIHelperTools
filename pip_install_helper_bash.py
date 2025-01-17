@@ -9,6 +9,7 @@ import os
 
 dotenv.load_dotenv()
 run_pip_install = False
+run_pip_requirements_freeze = False
 
 import_grep_command = 'grep -rio "^import \w*" %s' % sys.argv[1]
 from_grep_command = 'grep -rio "^from \w*" %s' % sys.argv[1]
@@ -52,3 +53,9 @@ if run_pip_install:
 	install_process = subprocess.run(shlex.split(pip_command), capture_output = True)
 	print("stdout -> %s" % install_process.stdout)
 	print("stderr -> %s" % install_process.stderr)
+
+if run_pip_requirements_freeze:
+	print("Generating requirements.txt")
+	cmd = "pip freeze > %s/requirements.txt" % sys.argv[1].rstrip("/")
+	requirements_process = subprocess.call(cmd, shell=True)
+	print("%s/requirements.txt generated" % sys.argv[1].rstrip("/"))
