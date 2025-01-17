@@ -5,7 +5,7 @@ import shlex
 import sys
 import os
 
-#This should be used to generate a list of pip installs.
+#This should be used to generate a pip install command from looking through python files in a given directory.
 
 dotenv.load_dotenv()
 run_pip_install = False
