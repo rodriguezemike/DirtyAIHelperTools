@@ -19,7 +19,7 @@ from_process = subprocess.run(shlex.split(from_grep_command), capture_output = T
 
 import_list = list(set([i.decode("utf-8").split(":")[1].strip() for i in import_process.stdout.splitlines()] + [i.decode("utf-8").split(":")[1].strip().replace("from", "import") for i in from_process.stdout.splitlines()]))
 
-prompt = "Generate a pip install command of the available PyPI packages from the following import list excluding interal packages or non-PyPI packages with no explanation %s" % ",".join(import_list)
+prompt = "Generate a pip install command of the available PyPI packages from the following import list excluding internal packages or non-PyPI packages with no explanation %s" % ",".join(import_list)
 
 print("Prompt -> %s\n\n" % prompt)
 
