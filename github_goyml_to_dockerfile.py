@@ -152,12 +152,18 @@ client = OpenAI(
 )
 
 path = sys.argv[1]
+try:
+	custom_distro = sys.argv[2]
+except IndexError:
+	custom_distro = None
+
 program_name = "program"
-distro = "debian"
+distro = custom_distro if custom_distro else "debian" 
 go_version = "1.0"
+working_directory = "./"
 dependency_section = False
 dependency_lines = []
-os_software_package_depends = ["apt", "apt-get", "sudo apt-get"]
+os_software_package_depends = ["apt", "apt-get", "sudo apt-get", "go get"]
 
 if not path.endswith("go.yml"):
 	raise Exception("We need a go.yml file to do this human.")
@@ -170,16 +176,18 @@ for line in [l.strip(" ").lstrip("\t").strip("\n") for l in lines]:
 		program_name = line
 	elif line.startswith("go-version"):
 		go_version = line.split(":")[1].strip("'")
-	elif line.startswith("runs-on"):
+	elif line.startswith("runs-on") and custom_distro == None:
 		distro = line.split(":")[1]
 	elif  dependency_section and any([i in line.lower() for i in os_software_package_depends ]):
 		dependency_lines.append(line)
+	elif dependency_section and line.startswith("working-directory"):
+		working_directory = line.split(":")[1]
 	elif "dependencies" in line.lower():
 		dependency_section = True
 	elif "name" in line and dependency_section == True:
 		dependency_section = False	
 	
-prompt = "Write a dockerfile for a go program named %s with no explanation that runs on %s and has the following dependency commands %s" % (program_name, go_version, "\n".join(dependency_lines))
+prompt = "Write a dockerfile with no explanation for a go program named %s having the working directory %s that runs on %s and has the following dependency commands %s" % (program_name, working_directory, go_version, "\n".join(dependency_lines))
 
 
 completion = client.chat.completions.create(
@@ -190,4 +198,10 @@ completion = client.chat.completions.create(
   ]
 )
 
-print("Completion -> %s" % completion.choices[0].message.content.split("\n"))
+print("Completion -> %s\n" % "\n".join([l for l in completion.choices[0].message.content.split("\n") if not l.startswith("```")]))
+
+
+
+with open("./Dockerfile", 'w') as f:
+	f.write("\n".join([l for l in completion.choices[0].message.content.split("\n") if not l.startswith("```")]))
+
