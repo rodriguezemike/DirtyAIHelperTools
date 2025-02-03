@@ -172,11 +172,11 @@ for line in [l.strip(" ").lstrip("\t").strip("\n") for l in lines]:
 		go_version = line.split(":")[1].strip("'")
 	elif line.startswith("runs-on"):
 		distro = line.split(":")[1]
-	elif  dependency_section and any([i in line.lower() for i in sotware_package_depends]):
+	elif  dependency_section and any([i in line.lower() for i in os_software_package_depends ]):
 		dependency_lines.append(line)
 	elif "dependencies" in line.lower():
 		dependency_section = True
-	elif "name" in line and dependency_section == True
+	elif "name" in line and dependency_section == True:
 		dependency_section = False	
 	
 prompt = "Write a dockerfile for a go program named %s with no explanation that runs on %s and has the following dependency commands %s" % (program_name, go_version, "\n".join(dependency_lines))
