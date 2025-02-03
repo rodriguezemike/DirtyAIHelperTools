@@ -1,5 +1,4 @@
-#ToDo: Make this work.
-
+#ToDo: Test
 '''
 write a dockerfile that runs on debian linux a go program on go version 1.23 and has the following github go.yml dependencies 
           sudo apt update && sudo apt upgrade
@@ -139,3 +138,56 @@ Copy
 docker run -p 8080:8080 my-go-app
 This will set up a container with your Go application and all the dependencies installed, ready to run on Debian.
 '''
+from openai import OpenAI
+import dotenv
+import subprocess
+import shlex
+import sys
+import os
+
+dotenv.load_dotenv()
+
+client = OpenAI(
+	api_key = os.environ["OPENAI_API_KEY"]
+)
+
+path = sys.argv[1]
+program_name = "program"
+distro = "debian"
+go_version = "1.0"
+dependency_section = False
+dependency_lines = []
+os_software_package_depends = ["apt", "apt-get", "sudo apt-get"]
+
+if not path.endswith("go.yml"):
+	raise Exception("We need a go.yml file to do this human.")
+
+with open(path, 'r') as f:
+	lines = f.readlines()
+
+for line in [l.strip(" ").lstrip("\t").strip("\n") for l in lines]:
+	if line.startswith("name"):
+		program_name = line
+	elif line.startswith("go-version"):
+		go_version = line.split(":")[1].strip("'")
+	elif line.startswith("runs-on"):
+		distro = line.split(":")[1]
+	elif  dependency_section and any([i in line.lower() for i in sotware_package_depends]):
+		dependency_lines.append(line)
+	elif "dependencies" in line.lower():
+		dependency_section = True
+	elif "name" in line and dependency_section == True
+		dependency_section = False	
+	
+prompt = "Write a dockerfile for a go program named %s with no explanation that runs on %s and has the following dependency commands %s" % (program_name, go_version, "\n".join(dependency_lines))
+
+
+completion = client.chat.completions.create(
+  model="gpt-4o-mini",
+  store=True,
+  messages=[
+    {"role": "user", "content": prompt}
+  ]
+)
+
+print("Completion -> %s" % completion.choices[0].message.content.split("\n"))

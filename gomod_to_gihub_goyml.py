@@ -1,3 +1,4 @@
+#ToDo: Test.
 '''
 Prompt based on this, find it in the go.mod file. and find necessary things.
 Write a github actions go.yml file that for a program called program that uses go version 1.23 and creates a go get commands for the following requirements
@@ -36,7 +37,6 @@ Write a github actions go.yml file that for a program called program that uses g
 from openai import OpenAI
 import dotenv
 import subprocess
-import shlex
 import sys
 import os
 
@@ -55,7 +55,7 @@ require_flag = False
 path = sys.argv[1]
 
 if not path.endswith("go.mod"):
-	raise Exception("WE need a go.mod file to do this sir.")
+	raise Exception("We need a go.mod file to do this human.")
 
 with open(path, 'r') as f:
 	lines = f.readlines()
