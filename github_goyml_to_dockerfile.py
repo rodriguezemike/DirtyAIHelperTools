@@ -8,7 +8,7 @@ import os
 dotenv.load_dotenv()
 
 client = OpenAI(
-	api_key = os.environ["POPENAI_API_KEY"]
+	api_key = os.environ["OPENAI_API_KEY"]
 )
 
 path = sys.argv[1]
