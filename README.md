@@ -20,6 +20,15 @@ Make sure you have these installed before running any of the scripts.
    ```bash
    pip install -r requirements.txt
 
-   
+3.Set up your environment variables by creating a `.env` file with your OpenAI API key:
+```text
+   OPENAI_API_KEY=your_openai_api_key_here
+```
+
+4. Explore and run the various scripts based on your needs. They are designed to be simple and easy to use. For example:
+   ```bash
+   python script_name.py
+
+
 Generic Idea for integrating AI aided CI/CD standup
 ![Screenshot 2025-02-11 121225](https://github.com/user-attachments/assets/1f4c6b4f-8c2a-4c42-9e9c-6c1d209132d8)
