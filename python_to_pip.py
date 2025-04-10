@@ -58,7 +58,7 @@ print(pip_command)
 print()
 
 if run_pip_requirements_generation:
-	python_directory = os.path.dirname(os.path.abspath(sys.argv[1]))
+	python_directory = os.path.abspath(sys.argv[1])
 	requirements_path = os.path.join(python_directory, "requirements.txt")
 	packages = pip_command.split("install")[1].split()
 	with open(requirements_path, 'w') as f:
